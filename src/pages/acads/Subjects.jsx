@@ -10,18 +10,15 @@ import subjectsMapping from "../../data/SubjectMapping";
 export default function SubjectsPage() {
   const params = useParams();
   const [subjects, setSubjects] = useState([]);
-  const [materials, setMaterials] = useState({});
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true); // sidebar toggle
 
-  // Normalize branch & semester
   const availableBranches = Object.keys(subjectsMapping);
   const normalizeForMatch = (str) => str?.toLowerCase().replace(/[-_]/g, "");
   const branchKey =
     availableBranches.find((b) => normalizeForMatch(b) === normalizeForMatch(params.branch)) || "";
   const semesterKey = params.semester ? "SEM" + params.semester.replace(/\D/g, "") : "";
 
-  // Resource labels & icons
   const resourceLabels = {
     pdf: "PDF Document",
     ppt: "Presentation",
@@ -48,25 +45,24 @@ export default function SubjectsPage() {
 
   useEffect(() => {
     const semSubjects = subjectsMapping[branchKey]?.[semesterKey] || [];
+
     if (semSubjects.length === 0) {
       setLoading(false);
       return;
     }
 
-    // Initialize subjects with empty resources
     const initialSubjects = semSubjects.map((sub) => ({
       name: typeof sub === "string" ? sub : sub.name,
       resources: {},
     }));
     setSubjects(initialSubjects);
 
-    // Fetch materials from backend
     const fetchMaterials = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("accessToken"); // ✅ corrected key
         const subjectNames = semSubjects.map((s) => (typeof s === "string" ? s : s.name));
 
-        const res = await fetch("http://localhost:5000/api/materials/batch", {
+        const res = await fetch("https://YOUR_BACKEND_URL/api/materials/batch", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -76,11 +72,12 @@ export default function SubjectsPage() {
         });
 
         const data = await res.json();
-        console.log("Materials from backend:", data);
+        console.log("Fetched materials:", data); // debug
 
         const mappedSubjects = semSubjects.map((s) => {
           const name = typeof s === "string" ? s : s.name;
           const base = typeof s === "object" ? s : { name };
+          // Use lowercase or exact key depending on backend
           return {
             ...base,
             resources: data?.[name] || {},
@@ -88,11 +85,9 @@ export default function SubjectsPage() {
         });
 
         setSubjects(mappedSubjects);
-        setMaterials(data || {});
         setLoading(false);
       } catch (err) {
         console.error("Error fetching materials:", err);
-        setMaterials({});
         setLoading(false);
       }
     };
@@ -100,28 +95,25 @@ export default function SubjectsPage() {
     fetchMaterials();
   }, [branchKey, semesterKey]);
 
-  if (loading) {
-    return <div className="p-8 text-center">Loading subjects...</div>;
-  }
-
-  if (!subjects || subjects.length === 0) {
+  if (loading) return <div className="p-8 text-center">Loading subjects...</div>;
+  if (!subjects || subjects.length === 0)
     return (
       <div className="p-8 text-center">
         No subjects found for {branchKey} - {semesterKey}
       </div>
     );
-  }
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative overflow-hidden">
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 
-<div className={`flex-1 relative z-10 transition-all duration-300 overflow-auto p-4 sm:p-6
-  ${isOpen ? "sm:ml-64 ml-0" : "sm:ml-20 ml-0"}`}>
-
+      <div
+        className={`flex-1 relative z-10 transition-all duration-300 overflow-auto p-4 sm:p-6 ${
+          isOpen ? "sm:ml-64 ml-0" : "sm:ml-20 ml-0"
+        }`}
+      >
         <StarBackground />
 
-        {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-3xl sm:text-6xl font-bold mb-4">
             {branchKey?.toUpperCase()} - {semesterKey?.toUpperCase()}{" "}
@@ -134,7 +126,6 @@ export default function SubjectsPage() {
           </p>
         </div>
 
-        {/* Subjects Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {subjects.map((subject, index) => {
             const subj = typeof subject === "string" ? { name: subject, resources: {} } : subject;
@@ -153,9 +144,7 @@ export default function SubjectsPage() {
                       {subj.icon || <span className="text-lg font-semibold">{subj.name.charAt(0)}</span>}
                     </div>
                     <h3 className="text-xl sm:text-2xl font-bold mb-2">{subj.name}</h3>
-                    {subj.description && (
-                      <p className="text-sm sm:text-base text-purple-300 mb-2">{subj.description}</p>
-                    )}
+                    {subj.description && <p className="text-sm sm:text-base text-purple-300 mb-2">{subj.description}</p>}
                     <div className="mt-4 text-xs sm:text-sm text-purple-400 animate-pulse">Hover to explore →</div>
                   </div>
 
@@ -205,7 +194,6 @@ export default function SubjectsPage() {
           })}
         </div>
 
-        {/* Footer */}
         <div className="mt-20 text-center">
           <div className="inline-block px-4 sm:px-6 py-2 bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-500/20">
             <p className="text-purple-300 text-sm sm:text-base">
