@@ -62,7 +62,7 @@ export default function SubjectsPage() {
         const token = localStorage.getItem("accessToken"); // ✅ corrected key
         const subjectNames = semSubjects.map((s) => (typeof s === "string" ? s : s.name));
 
-        const res = await fetch("https://YOUR_BACKEND_URL/api/materials/batch", {
+        const res = await fetch("https://igdtuw-verse.onrender.com/api/materials/batch", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
