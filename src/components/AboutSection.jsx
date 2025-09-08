@@ -81,12 +81,7 @@ export const AboutSection = () => {
             <a href="#contact" className="cosmic-button">
               Get In Touch
             </a>
-            <a
-              href=""
-              className="px-6 py-2 rounded-full border border-purple-400 text-purple-400 hover:bg-purple-500/10 transition-colors duration-300"
-            >
-              Download CV
-            </a>
+
           </div>
         </motion.div>
 
