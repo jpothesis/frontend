@@ -1,12 +1,11 @@
+// src/components/Register.jsx
 "use client";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import StarBackground from "../components/StarBackground.jsx"; // ✅ no curly braces
+import StarBackground from "../components/StarBackground.jsx"; // background component
 
-import API from "../api/api";
-
-const Register = () => {
+export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,20 +16,33 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
     try {
-      const res = await API.post("/register", {
-        username: name,
-        email,
-        password,
-        branch,
-        semester,
-        section,
+      const res = await fetch("https://igdtuw-verse.onrender.com/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: name,
+          email,
+          password,
+          branch,
+          semester,
+          section,
+        }),
       });
-      alert(res.data.message);
-      navigate("/login"); // go to login after success
+
+      const data = await res.json();
+      console.log(data);
+
+      if (res.ok) {
+        alert("Registration successful!");
+        navigate("/login");
+      } else {
+        alert(data.error || "Registration failed");
+      }
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.error || "Registration failed");
+      alert("Server error. Try again later.");
     }
   };
 
@@ -40,78 +52,57 @@ const Register = () => {
 
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden px-4 sm:px-6">
-      {/* Starry Background */}
       <StarBackground />
 
-      {/* Transparent Register Card */}
-      <div
-        className="relative z-10 w-full max-w-md p-6 sm:p-8 rounded-2xl 
-                   bg-gradient-to-br from-purple-800/40 via-purple-600/30 to-purple-800/40
-                   backdrop-blur-lg border border-white/20 shadow-xl"
-      >
+      <div className="relative z-10 w-full max-w-md p-6 sm:p-8 rounded-2xl 
+                      bg-gradient-to-br from-purple-800/40 via-purple-600/30 to-purple-800/40
+                      backdrop-blur-lg border border-white/20 shadow-xl">
         <h1 className="text-2xl sm:text-3xl font-extrabold mb-6 text-center text-white tracking-wide drop-shadow-lg">
           Create an Account
         </h1>
 
         <form className="flex flex-col gap-4" onSubmit={handleRegister}>
-          {/* Name */}
           <input
             type="text"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 
-                       text-white placeholder-gray-300 focus:outline-none 
-                       focus:ring-2 focus:ring-purple-400 transition"
+                       text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
             required
           />
 
-          {/* Email */}
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 
-                       text-white placeholder-gray-300 focus:outline-none 
-                       focus:ring-2 focus:ring-purple-400 transition"
+                       text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
             required
           />
 
-          {/* Password */}
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 
-                       text-white placeholder-gray-300 focus:outline-none 
-                       focus:ring-2 focus:ring-purple-400 transition"
+                       text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
             required
           />
 
-          {/* Branch Dropdown */}
           <select
             value={branch}
-            onChange={(e) => {
-              setBranch(e.target.value);
-              setSection(""); // reset section when branch changes
-            }}
+            onChange={(e) => { setBranch(e.target.value); setSection(""); }}
             className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 
                        text-white focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
             required
           >
-            <option value="" disabled className="text-gray-400">
-              Select your branch
-            </option>
-            {branches.map((b, idx) => (
-              <option key={idx} value={b} className="text-black">
-                {b}
-              </option>
-            ))}
+            <option value="" disabled>Select your branch</option>
+            {branches.map((b, idx) => <option key={idx} value={b} className="text-black">{b}</option>)}
           </select>
 
-          {/* Semester Dropdown */}
           <select
             value={semester}
             onChange={(e) => setSemester(e.target.value)}
@@ -119,17 +110,10 @@ const Register = () => {
                        text-white focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
             required
           >
-            <option value="" disabled className="text-gray-400">
-              Select your semester
-            </option>
-            {semesters.map((s, idx) => (
-              <option key={idx} value={s} className="text-black">
-                {s}
-              </option>
-            ))}
+            <option value="" disabled>Select your semester</option>
+            {semesters.map((s, idx) => <option key={idx} value={s} className="text-black">{s}</option>)}
           </select>
 
-          {/* Section Dropdown */}
           {branch && (
             <select
               value={section}
@@ -138,18 +122,11 @@ const Register = () => {
                          text-white focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
               required
             >
-              <option value="" disabled className="text-gray-400">
-                Select your section in {branch}
-              </option>
-              {sectionOptions.map((sec, idx) => (
-                <option key={idx} value={sec} className="text-black">
-                  {sec}
-                </option>
-              ))}
+              <option value="" disabled>Select your section in {branch}</option>
+              {sectionOptions.map((sec, idx) => <option key={idx} value={sec} className="text-black">{sec}</option>)}
             </select>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="mt-2 w-full bg-gradient-to-r from-purple-500 to-purple-700 
@@ -163,6 +140,4 @@ const Register = () => {
       </div>
     </div>
   );
-};
-
-export default Register;
+}
