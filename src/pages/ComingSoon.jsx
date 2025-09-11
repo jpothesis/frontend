@@ -47,7 +47,7 @@ export default function ComingSoon() {
         {/* Countdown or Launch Info */}
         <div className="mb-8 p-4 rounded-lg bg-white/5 border border-white/10">
           <p className="text-purple-200 text-sm mb-2">Expected Launch</p>
-          <p className="text-white text-xl sm:text-2xl font-bold">Q2 2024</p>
+          <p className="text-white text-xl sm:text-2xl font-bold">october 2025</p>
         </div>
 
         {/* Email Subscription */}

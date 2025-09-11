@@ -1,17 +1,19 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useDashboard } from "../context/DashboardContext"
-import { Search } from "lucide-react"
-import { motion } from "framer-motion"
-import { getGreeting } from "../lib/getGreeting"
-import StarBackground from "../components/StarBackground.jsx"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { useDashboard } from "../context/DashboardContext";
+import { Search } from "lucide-react";
+import { motion } from "framer-motion";
+import { getGreeting } from "../lib/getGreeting";
+import StarBackground from "../components/StarBackground.jsx";
+import { useNavigate } from "react-router-dom";
 
-import bannerImage from "../assets/banner.png"
-import bannerLogo from "../assets/banner_logo.png"
-import { FaCalendarAlt, FaUniversity } from "react-icons/fa"
-import { Assignments, UpcomingDeadlines } from "../components/Assignments"
+import bannerImage from "../assets/banner.png";
+import bannerLogo from "../assets/banner_logo.png";
+import { FaCalendarAlt, FaUniversity } from "react-icons/fa";
+import { Assignments } from "@/components/Assignments";
+import { UpcomingDeadlines } from "@/components/UpcomingDeadlines";
+
 
 // Animation variants
 const fadeUp = {
@@ -25,37 +27,37 @@ const fadeUp = {
       ease: [0.25, 0.8, 0.25, 1],
     },
   }),
-}
+};
 
 // Helper: pick a style for avatar
 const getAvatarStyle = (username) => {
-  const styles = ["avataaars", "bottts", "micah", "thumbs", "pixel-art"]
-  const charSum = username.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0)
-  return styles[charSum % styles.length]
-}
+  const styles = ["avataaars", "bottts", "micah", "thumbs", "pixel-art"];
+  const charSum = username.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return styles[charSum % styles.length];
+};
 
 const Grid = () => {
-  const { data } = useDashboard()
-  const navigate = useNavigate()
+  const { data } = useDashboard();
+  const navigate = useNavigate();
 
-  const userName = "there" // Always fallback to "there"
+  const userName = "there"; // Always fallback to "there"
 
-  const [greeting, setGreeting] = useState(getGreeting())
+  const [greeting, setGreeting] = useState(getGreeting());
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
-  })
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setGreeting(getGreeting())
-    }, 60 * 1000)
-    return () => clearInterval(interval)
-  }, [])
+      setGreeting(getGreeting());
+    }, 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-  if (!data) return <p>Loading...</p>
+  if (!data) return <p>Loading...</p>;
 
   return (
     <div className="relative min-h-screen overflow-hidden transition-all duration-300 flex-1">
@@ -161,36 +163,8 @@ const Grid = () => {
           </motion.div>
         </div>
 
-        {/* Grid: Coming Soon + Assignments */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
-          {/* Left Box → Coming Soon */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            custom={10}
-            className="bg-white/10 p-6 rounded-xl shadow border flex flex-col justify-center items-center text-center"
-          >
-            <h3 className="text-white text-xl font-bold mb-2">Coming Soon 🚀</h3>
-            <p className="text-purple-200 mb-4">Exciting features are on the way. Stay tuned!</p>
-            <button
-              onClick={() => navigate("/coming-soon")}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition"
-            >
-              Explore
-            </button>
-
-            <h3 className="font-bold mb-3 text-black">New Feature</h3>
-            <div className="flex gap-3">
-              {data.instructors?.map((img, i) => (
-                <div key={i}>
-                  <p className="font-semibold text-purple-600">Coming soon</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Right Box → Assignments + Deadlines */}
+        {/* 📌 Grid: Assignments + Deadlines */}
+        <div className="grid grid-cols-1 gap-6 h-full">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -198,14 +172,13 @@ const Grid = () => {
             custom={11}
             className="bg-white/10 p-6 rounded-xl shadow border overflow-y-auto max-h-[500px] space-y-8"
           >
-            <h3 className="font-bold mb-3 text-white">Assignment To-do List</h3>
             <Assignments />
             <UpcomingDeadlines />
           </motion.div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Grid
+export default Grid;

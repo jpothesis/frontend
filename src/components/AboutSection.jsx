@@ -76,13 +76,17 @@ export const AboutSection = () => {
             Our goal is to create digital experiences that make a difference. We believe in teamwork, 
             creativity, and constant growth, and we’re proud to collaborate on projects that we’re passionate about.
           </p>
+<div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
+  <a
+    href="https://www.linkedin.com/company/108712024/admin/dashboard" // <-- replace with your LinkedIn URL
+    target="_blank"
+    rel="noopener noreferrer"
+    className="cosmic-button"
+  >
+    Get In Touch
+  </a>
+</div>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
-            <a href="#contact" className="cosmic-button">
-              Get In Touch
-            </a>
-
-          </div>
         </motion.div>
 
         {/* Right side (profiles/cards) */}

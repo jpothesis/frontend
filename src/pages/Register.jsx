@@ -46,7 +46,7 @@ export default function Register() {
     }
   };
 
-  const branches = ["CSE", "CSE AI", "IT", "ECE", "ME"];
+  const branches = ["CSE", "CSE AI", "IT", "ECE", "ECE AI", "IT", "AI-ML", "MAC", "MAE"];
   const semesters = ["1st","2nd","3rd","4th","5th","6th","7th","8th"];
   const sectionOptions = branch ? [`${branch}1`, `${branch}2`, `${branch}3`] : [];
 

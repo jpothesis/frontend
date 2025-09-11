@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { FaPlus, FaCalendarPlus, FaTrash } from "react-icons/fa"
-import { useNavigate } from "react-router-dom"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -14,70 +13,41 @@ const fadeUp = {
   }),
 }
 
-// Demo Data
-const initialAssignments = [
-  { id: 1, title: "Assignment 1", subject: "Subject", dueDate: "yyyy-mm-dd", status: "pending" },
-]
-
-const initialDeadlines = [
-  { id: 1, title: "Assignment 1", subject: "Subject", dueDate: "yyyy-mm-dd", priority: "high" },
-]
-
-export function AssignmentsPage() {
-  return (
-    <div className="min-h-screen p-6 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-6 
-      bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-900">
-      {/* Left Box → Coming Soon */}
-      <ComingSoonBox />
-
-      {/* Right Column → Assignments + Deadlines + Resources */}
-      <div className="space-y-8">
-        <Assignments />
-        <UpcomingDeadlines />
-        <StudyResourcesBox />
-      </div>
-    </div>
-  )
-}
-
-function ComingSoonBox() {
-  const navigate = useNavigate()
-
-  return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={fadeUp}
-      custom={0}
-      className="bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-6 rounded-xl shadow-lg 
-      flex flex-col items-center justify-center h-full border border-purple-400/30"
-    >
-      <h3 className="text-xl font-bold mb-2">Coming Soon 🚀</h3>
-      <p className="mb-4 text-purple-100">Exciting features are on the way. Stay tuned!</p>
-      <button
-        onClick={() => navigate("/coming-soon")}
-        className="px-4 py-2 bg-white text-purple-700 rounded-lg font-semibold 
-        hover:bg-gray-200 transition"
-      >
-        Explore
-      </button>
-    </motion.div>
-  )
-}
-
 export function Assignments() {
-  const [assignments, setAssignments] = useState(initialAssignments)
+  const [assignments, setAssignments] = useState([])
+  const [title, setTitle] = useState("")
+  const [subject, setSubject] = useState("")
+  const [description, setDescription] = useState("")
+  const [dueDate, setDueDate] = useState("")
+
+  // Load saved assignments from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("assignments")
+    if (saved) setAssignments(JSON.parse(saved))
+  }, [])
+
+  // Save to localStorage whenever assignments change
+  useEffect(() => {
+    localStorage.setItem("assignments", JSON.stringify(assignments))
+  }, [assignments])
 
   const addAssignment = () => {
-    const newId = assignments.length + 1
+    if (!title.trim() || !dueDate.trim()) return
+
     const newAssignment = {
-      id: newId,
-      title: `Assignment ${newId}`,
-      subject: "Subject",
-      dueDate: "yyyy-mm-dd",
+      id: Date.now(),
+      title,
+      subject,
+      description,
+      dueDate,
       status: "pending",
     }
+
     setAssignments([...assignments, newAssignment])
+    setTitle("")
+    setSubject("")
+    setDescription("")
+    setDueDate("")
   }
 
   const removeAssignment = (id) => {
@@ -90,197 +60,195 @@ export function Assignments() {
     const baseUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE"
     const url = `${baseUrl}&text=${encodeURIComponent(
       item.title,
-    )}&dates=${start.replace(/-|:/g, "")}/${end.replace(/-|:/g, "")}&details=${encodeURIComponent(item.subject || "")}`
+    )}&dates=${start.replace(/-|:/g, "")}/${end.replace(/-|:/g, "")}&details=${encodeURIComponent(
+      item.description || "",
+    )}`
     window.open(url, "_blank")
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-bold mb-3 text-white text-lg">Current Assignments</h3>
-        <button
-          onClick={addAssignment}
-          className="flex items-center gap-1 px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition"
-        >
-          <FaPlus /> Add
-        </button>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-white bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent mb-2">
+          Assignment Tracker
+        </h1>
+        <p className="text-purple-200">Stay organized and never miss a deadline</p>
       </div>
 
-      {assignments.map((assignment, index) => (
-        <motion.div
-          key={assignment.id}
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          custom={index}
-          className="bg-gradient-to-r from-purple-700/70 to-indigo-800/70 backdrop-blur-sm 
-          p-4 rounded-xl border border-purple-400/20 hover:from-purple-600/70 hover:to-indigo-700/70 
-          transition-colors flex justify-between items-start shadow-md"
-        >
-          <div>
-            <h4 className="font-semibold text-white">{assignment.title}</h4>
-            <p className="text-purple-200 text-sm">{assignment.subject}</p>
-            <p className="text-purple-300 text-sm">{assignment.dueDate}</p>
-            <span
-              className={`inline-block px-2 py-1 rounded-full text-xs ${
-                assignment.status === "completed"
-                  ? "bg-green-500/20 text-green-200"
-                  : assignment.status === "in-progress"
-                  ? "bg-yellow-500/20 text-yellow-200"
-                  : "bg-red-500/20 text-red-200"
-              }`}
-            >
-              {assignment.status}
-            </span>
+      {/* Form to add assignment */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-purple-800/40 to-violet-700/40 backdrop-blur-lg border border-purple-400/20 p-6 rounded-2xl shadow-2xl space-y-4"
+      >
+        <h3 className="text-white font-bold text-xl mb-4 flex items-center gap-2">
+          <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></div>
+          Add New Assignment
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            placeholder="Assignment Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-violet-800/50 border border-purple-400/30 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
+          />
+          <input
+            type="text"
+            placeholder="Subject"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            className="w-full p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-violet-800/50 border border-purple-400/30 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
+          />
+        </div>
+
+        <textarea
+          placeholder="Description (optional)"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={3}
+          className="w-full p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-violet-800/50 border border-purple-400/30 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all resize-none"
+        />
+
+        <div className="flex flex-col sm:flex-row gap-4 items-end">
+          <div className="flex-1">
+            <label className="block text-purple-200 text-sm mb-2">Due Date</label>
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              className="w-full p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-violet-800/50 border border-purple-400/30 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
+            />
           </div>
-
-          <div className="flex flex-col items-center gap-2">
-            <button
-              onClick={() => addToGoogleCalendar(assignment)}
-              className="text-white text-lg hover:text-yellow-300 transition"
-              title="Add to Google Calendar"
-            >
-              <FaCalendarPlus />
-            </button>
-            <button
-              onClick={() => removeAssignment(assignment.id)}
-              className="text-white text-lg hover:text-red-400 transition"
-              title="Remove Assignment"
-            >
-              <FaTrash />
-            </button>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  )
-}
-
-export function UpcomingDeadlines() {
-  const [deadlines, setDeadlines] = useState(initialDeadlines)
-
-  const addDeadline = () => {
-    const newId = deadlines.length + 1
-    const newDeadline = {
-      id: newId,
-      title: `Assignment ${newId}`,
-      subject: "Subject",
-      dueDate: "yyyy-mm-dd",
-      priority: "medium",
-    }
-    setDeadlines([...deadlines, newDeadline])
-  }
-
-  const removeDeadline = (id) => {
-    setDeadlines(deadlines.filter((d) => d.id !== id))
-  }
-
-  const addToGoogleCalendar = (deadline) => {
-    const start = deadline.dueDate + "T09:00:00"
-    const end = deadline.dueDate + "T10:00:00"
-    const baseUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE"
-    const url = `${baseUrl}&text=${encodeURIComponent(
-      deadline.title,
-    )}&dates=${start.replace(/-|:/g, "")}/${end.replace(/-|:/g, "")}&details=${encodeURIComponent(deadline.subject || "")}`
-    window.open(url, "_blank")
-  }
-
-  return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-bold mb-3 text-white text-lg">Upcoming Deadlines</h3>
-        <button
-          onClick={addDeadline}
-          className="flex items-center gap-1 px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition"
-        >
-          <FaPlus /> Add
-        </button>
-      </div>
-
-      {deadlines.map((deadline, index) => (
-        <motion.div
-          key={deadline.id}
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          custom={index}
-          className="bg-gradient-to-r from-purple-700/70 to-indigo-800/70 backdrop-blur-sm 
-          p-4 rounded-xl border border-purple-400/20 hover:from-purple-600/70 hover:to-indigo-700/70 
-          transition-colors flex justify-between items-center shadow-md"
-        >
-          <div>
-            <h4 className="font-semibold text-white">{deadline.title}</h4>
-            <p className="text-purple-200 text-sm">{deadline.subject}</p>
-            <p className="text-purple-300 text-sm">{deadline.dueDate}</p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span
-              className={`inline-block px-2 py-1 rounded-full text-xs ${
-                deadline.priority === "high"
-                  ? "bg-red-500/20 text-red-200"
-                  : "bg-yellow-500/20 text-yellow-200"
-              }`}
-            >
-              {deadline.priority}
-            </span>
-            <button
-              onClick={() => addToGoogleCalendar(deadline)}
-              className="text-white text-lg hover:text-yellow-300 transition"
-              title="Add to Google Calendar"
-            >
-              <FaCalendarPlus />
-            </button>
-            <button
-              onClick={() => removeDeadline(deadline.id)}
-              className="text-white text-lg hover:text-red-400 transition"
-              title="Remove Deadline"
-            >
-              <FaTrash />
-            </button>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  )
-}
-
-function StudyResourcesBox() {
-  const studyResources = [
-    { id: 1, title: "Study Notes", description: "Access your saved study materials", icon: "📚" },
-    { id: 2, title: "Practice Tests", description: "Take mock exams and quizzes", icon: "📝" },
-    { id: 3, title: "Video Lectures", description: "Watch recorded class sessions", icon: "🎥" },
-  ]
-
-  return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-bold mb-3 text-white text-lg">Study Resources</h3>
-        <button className="flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition">
-          <FaPlus /> Add
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {studyResources.map((resource, index) => (
-          <motion.div
-            key={resource.id}
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            custom={index}
-            className="bg-gradient-to-br from-purple-500/80 to-pink-500/80 
-            backdrop-blur-sm p-4 rounded-xl border border-pink-300/40 
-            hover:from-purple-400/90 hover:to-pink-400/90 
-            shadow-lg transition-colors cursor-pointer text-center"
+          <button
+            onClick={addAssignment}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-purple-500/25 transform hover:scale-105"
           >
-            <div className="text-2xl mb-2">{resource.icon}</div>
-            <h4 className="font-semibold text-white mb-1">{resource.title}</h4>
-            <p className="text-purple-100 text-sm">{resource.description}</p>
+            <FaPlus className="text-sm" /> Add Assignment
+          </button>
+        </div>
+      </motion.div>
+
+      {/* Assignment list */}
+      <div className="space-y-6">
+        <h3 className="font-bold text-white text-2xl flex items-center gap-3">
+          <div className="w-1 h-8 bg-gradient-to-b from-purple-400 to-pink-400 rounded-full"></div>
+          Current Assignments
+          <span className="text-sm font-normal text-purple-300">({assignments.length})</span>
+        </h3>
+
+        {assignments.length === 0 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
+            <div className="w-16 h-16 bg-gradient-to-r from-purple-600/20 to-violet-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <FaPlus className="text-purple-400 text-xl" />
+            </div>
+            <p className="text-purple-300 text-lg">No assignments yet</p>
+            <p className="text-purple-400 text-sm">Add your first assignment above to get started</p>
           </motion.div>
-        ))}
+        )}
+
+        <div className="grid gap-4">
+          {assignments.map((assignment, index) => {
+            const daysLeft = (new Date(assignment.dueDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+
+            const isUrgent = daysLeft <= 2
+            const isOverdue = daysLeft < 0
+
+            return (
+              <motion.div
+                key={assignment.id}
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+                custom={index}
+                className={`relative overflow-hidden rounded-2xl shadow-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${
+                  isOverdue
+                    ? "bg-gradient-to-r from-red-900/60 to-pink-800/60 border border-red-400/30"
+                    : isUrgent
+                      ? "bg-gradient-to-r from-orange-900/60 to-red-800/60 border border-orange-400/30"
+                      : "bg-gradient-to-r from-purple-800/60 to-violet-700/60 border border-purple-400/20"
+                }`}
+              >
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+
+                <div className="relative p-6 flex justify-between items-start">
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-start gap-3">
+                      <div
+                        className={`w-3 h-3 rounded-full mt-1 ${
+                          isOverdue ? "bg-red-400" : isUrgent ? "bg-orange-400" : "bg-purple-400"
+                        }`}
+                      ></div>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-white text-lg leading-tight">{assignment.title}</h4>
+                        {assignment.subject && (
+                          <span className="inline-block px-3 py-1 bg-gradient-to-r from-purple-600/50 to-violet-600/50 text-purple-200 text-xs rounded-full mt-2">
+                            {assignment.subject}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {assignment.description && (
+                      <p className="text-purple-200 text-sm leading-relaxed ml-6">{assignment.description}</p>
+                    )}
+
+                    <div className="ml-6 space-y-1">
+                      <p className="text-purple-300 text-sm flex items-center gap-2">
+                        <span>📅</span>
+                        Due:{" "}
+                        {new Date(assignment.dueDate).toLocaleDateString("en-US", {
+                          weekday: "short",
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </p>
+
+                      {isOverdue ? (
+                        <p className="text-red-300 font-semibold text-sm flex items-center gap-2">
+                          <span>⚠️</span>
+                          Overdue by {Math.abs(Math.ceil(daysLeft))} day
+                          {Math.abs(Math.ceil(daysLeft)) !== 1 ? "s" : ""}!
+                        </p>
+                      ) : isUrgent ? (
+                        <p className="text-orange-300 font-semibold text-sm flex items-center gap-2">
+                          <span>⏰</span>
+                          Due in {Math.ceil(daysLeft)} day{Math.ceil(daysLeft) !== 1 ? "s" : ""}!
+                        </p>
+                      ) : (
+                        <p className="text-purple-400 text-sm">
+                          {Math.ceil(daysLeft)} day{Math.ceil(daysLeft) !== 1 ? "s" : ""} remaining
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-3 ml-4">
+                    <button
+                      onClick={() => addToGoogleCalendar(assignment)}
+                      className="p-3 bg-gradient-to-r from-purple-600/50 to-violet-600/50 hover:from-purple-500/60 hover:to-violet-500/60 text-white rounded-xl transition-all duration-200 hover:scale-110 shadow-lg"
+                      title="Add to Google Calendar"
+                    >
+                      <FaCalendarPlus className="text-sm" />
+                    </button>
+                    <button
+                      onClick={() => removeAssignment(assignment.id)}
+                      className="p-3 bg-gradient-to-r from-red-600/50 to-pink-600/50 hover:from-red-500/60 hover:to-pink-500/60 text-white rounded-xl transition-all duration-200 hover:scale-110 shadow-lg"
+                      title="Remove Assignment"
+                    >
+                      <FaTrash className="text-sm" />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )
 }
-
