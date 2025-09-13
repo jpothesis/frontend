@@ -4,9 +4,12 @@ import { ArrowDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const HeroSection = () => {
+  // ✅ Check login status
+  const isLoggedIn = !!localStorage.getItem("accessToken");
+
   return (
     <section
-      id="home" // This makes the Navbar "Home" button scroll here
+      id="home"
       className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 text-center"
     >
       <div className="container max-w-4xl mx-auto z-10 space-y-6">
@@ -26,8 +29,8 @@ const HeroSection = () => {
         </p>
 
         <div className="pt-4 opacity-0 animate-fade-in-delay-4">
-          <Link to="/register" className="cosmic-button">
-            Explore the Verse
+          <Link to={isLoggedIn ? "/dashboard" : "/register"} className="cosmic-button">
+            Go to Dashboard
           </Link>
         </div>
       </div>

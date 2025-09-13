@@ -1,5 +1,5 @@
 const subjectsMapping = {
-    CSE: {
+ CSE: {
       SEM1: [
         "Applied Mathematics",
         "Applied Physics",
@@ -7,6 +7,21 @@ const subjectsMapping = {
         "Communication Skills",
         "Basics of Electrical and Electronics Engineering",
         "Web Application Development",
+      ],
+      SEM2: [
+        "Probability and Statistics",
+        "Environmental Science",
+        "Data Structures and Algorithms",
+        "Soft Skills and Personality Development",
+        "Introduction to Data Science",
+        "Mobile Application Development",
+      ],
+      SEM3: [
+        "Discrete Structures",
+        "Software Engineering",
+        "Introduction to IOT",
+        "Operation Management",
+        "Design and Analysis of Algorithms",
       ],
     },
     CSE_AI: {
@@ -18,6 +33,24 @@ const subjectsMapping = {
         "Programming with Python",
         "Basics of Electrical and Electronics Engineering",
       ],
+      SEM2: [
+        "Applied Mathematics",
+        "Applied Physics",
+        "Soft Skills and Personality Development",
+        "Data Structures and Algorithms",
+        "Cyber Security Awareness",
+        "Introduction to Data Science",
+        "Web Application Development",
+      ],
+      SEM3: [
+        "Artificial Intelligence",
+        "Data Base Management Systems",
+        "Discrete Structures",
+        "Object Oriented Programming",
+        "Operation Management",
+        "Ergonomic design",
+        "Computer Organization and Architecture",
+      ],
     },
     IT: {
       SEM1: [
@@ -28,6 +61,23 @@ const subjectsMapping = {
         "Programming with Python",
         "Communication Skills",
       ],
+      SEM2: [
+        "Probability and Statistics",
+        "Environmental Science",
+        "Soft Skills and Personality Development",
+        "CAD Modelling",
+        "Object Oriented Programming",
+        "Introduction to Data Science",
+        "Basics of Electrical and Electronics Engineering",
+      ],
+      SEM3: [
+        "Discrete Structures",
+        "Data Structures and Algorithms",
+        "Data Base Management Systems",
+        "Open Source Technologies",
+        "Operation Management",
+        "Ergonomic design",
+      ],
     },
     ECE: {
       SEM1: [
@@ -36,6 +86,22 @@ const subjectsMapping = {
         "Signals and Systems",
         "Communication Skills",
         "Electronics Workshop",
+        "Introduction to Data Science",
+      ],
+      SEM2: [
+        "Environmental Science",
+        "Applied Physics",
+        "Network Analysis and Synthesis",
+        "Soft Skills and Personality Development",
+        "IT Workshop",
+      ],
+      SEM3: [
+        "Numerical Techniques for Engineers",
+        "Digital System Design",
+        "Analog Communication Systems",
+        "Electronics Circuit Simulation Workshop",
+        "Advanced Electronic Workshop",
+        "Data Base Management Systems",
       ],
     },
     ECE_AI: {
@@ -45,6 +111,22 @@ const subjectsMapping = {
         "Signals and Systems",
         "Communication Skills",
         "Electronics Workshop",
+        "Introduction to Data Science",
+      ],
+      SEM2: [
+        "Environmental Science",
+        "Applied Physics",
+        "Network Analysis and Synthesis",
+        "Soft Skills and Personality Development",
+        "IT Workshop",
+      ],
+      SEM3: [
+        "Numerical Techniques for Engineers",
+        "Analog and Digital Electronics",
+        "Object Oriented Programming",
+        "Electronics Circuit Simulation Workshop",
+        "Advanced Electronic Workshop",
+        "Data Structures and Algorithms",
       ],
     },
     AIML: {
@@ -56,6 +138,21 @@ const subjectsMapping = {
         "Programming with Python",
         "Basics of Electrical and Electronics Engineering",
       ],
+      SEM2: [
+        "Applied Mathematics",
+        "Applied Physics",
+        "Soft Skills and Personality Development",
+        "CAD Modelling",
+        "Object Oriented Programming",
+        "Introduction to Data Science",
+      ],
+      SEM3: [
+        "Discrete Structures",
+        "Data Structures and Algorithms",
+        "Data Base Management Systems",
+        "Open Source Technologies",
+        "Operation Management",
+      ],
     },
     MAE: {
       SEM1: [
@@ -65,8 +162,40 @@ const subjectsMapping = {
         "Communication Skills",
         "Workshop Practice",
       ],
+      SEM2: [
+        "Probability and Statistics",
+        "Environmental Science",
+        "Soft Skills and Personality Development",
+        "Engineering Mechanics",
+        "Cyber Security Awareness",
+        "Web Application Development",
+        "IT Workshop",
+        "Introduction to Data Science",
+        "Engineering Graphics and CAD Modelling",
+      ],
+      SEM3: [
+        "Numerical Techniques for Engineers",
+        "Production Technology 1",
+        "Engineering Materials",
+        "Thermal Engineering",
+        "Machine Drawing Lab",
+        "Data Base Management Systems",
+        "Robotics Lab",
+      ],
+    },
+    MAC: {
+      SEM1: [
+        "Calculus 1",
+        "Applied Physics",
+        "Programming with C",
+        "Communication Skills",
+        "Basics of Electrical and Electronics Engineering",
+        "Web Application Development",
+      ],
     },
   };
+
+
   
   export default subjectsMapping;
   

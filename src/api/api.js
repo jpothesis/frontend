@@ -1,12 +1,12 @@
+// src/api.ts
 import axios from "axios";
 
-// Create Axios instance with backend URL from environment variable
 const API = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/auth`, // dynamic backend URL
-  withCredentials: true, // allows cookies (refresh token)
+  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/auth`,
+  withCredentials: true, // send refresh token cookie automatically
 });
 
-// 🔹 Attach token from localStorage before each request
+// Attach access token to requests
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
@@ -15,17 +15,17 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// 🔹 Auto-refresh token if expired (401)
+// Handle 401 errors → try refresh token
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Prevent infinite loop
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
+        // Call refresh endpoint
         const res = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/api/auth/refresh`,
           {},
@@ -39,7 +39,6 @@ API.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return API(originalRequest);
       } catch (err) {
-        // If refresh fails, clear token and redirect to login
         localStorage.removeItem("accessToken");
         window.location.href = "/login";
       }

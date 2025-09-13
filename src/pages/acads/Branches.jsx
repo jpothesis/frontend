@@ -64,6 +64,13 @@ const branches = [
     description: "Mechanical & Automation",
     path: "/branches/mae/semesters",
   },
+    {
+    name: "MAC",
+    icon: <FaCogs size={40} />,
+    color: "from-purple-700 to-indigo-700",
+    description: "Mathematics and Computing",
+    path: "/branches/mac/semesters",
+  },
 ]
 
 export default function Branches() {

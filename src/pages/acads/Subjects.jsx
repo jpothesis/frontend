@@ -150,7 +150,7 @@ export default function SubjectsPage() {
 
                   {/* Back */}
                   <div className="flip-card-back p-4 sm:p-6 rounded-xl bg-black/20 backdrop-blur-sm shadow-lg text-center">
-                    <h3 className="text-xl font-bold mb-4">{subj.name} Resources</h3>
+                  
                     <div className="w-16 h-0.5 mx-auto bg-purple-400 mb-4"></div>
                     <div className="grid gap-4 text-sm w-full max-h-64 overflow-y-auto pr-2">
                       {Object.keys(resources).length === 0 ? (

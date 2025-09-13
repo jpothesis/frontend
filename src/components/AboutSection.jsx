@@ -63,7 +63,7 @@ export const AboutSection = () => {
           custom={1}
         >
           <h3 className="text-2xl font-semibold text-purple-300">
-            We’re Avika, Jaanvi, and Aakanksha — a team of enthusiastic Web Developers & Tech Creators.
+            We’re Jaanvi, Avika, and Aakanksha — a team of enthusiastic Web Developers & Tech Creators.
           </h3>
 
           <p className="text-gray-300 leading-relaxed">

@@ -12,7 +12,7 @@ import bannerImage from "../assets/banner.png";
 import bannerLogo from "../assets/banner_logo.png";
 import { FaCalendarAlt, FaUniversity } from "react-icons/fa";
 import { Assignments } from "@/components/Assignments";
-import { UpcomingDeadlines } from "@/components/UpcomingDeadlines";
+
 
 
 // Animation variants
@@ -173,7 +173,7 @@ const Grid = () => {
             className="bg-white/10 p-6 rounded-xl shadow border overflow-y-auto max-h-[500px] space-y-8"
           >
             <Assignments />
-            <UpcomingDeadlines />
+        
           </motion.div>
         </div>
       </div>

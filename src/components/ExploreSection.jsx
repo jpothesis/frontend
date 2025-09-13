@@ -1,6 +1,7 @@
 "use client";
 
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom"; // ✅ Import Link
 import "../styles/flipcard.css";
 import academicsImg from "../assets/projects/academics.png";
 import societyImg from "../assets/projects/societies.png";
@@ -13,61 +14,62 @@ const projects = [
   {
     id: 1,
     title: "Academics Hub",
-    description: "A centralized platform for students to access organized study materials including notes, textbooks, and previous year question papers, helping them prepare effectively for exams.",
+    description:
+      "A centralized platform for students to access organized study materials including notes, textbooks, and previous year question papers, helping them prepare effectively for exams.",
     image: academicsImg,
     tags: ["Study Materials", "Notes", "Books", "PYQs"],
-    demoUrl: "#",
-    githubUrl: "#",
+    demoUrl: "/branches", // ✅ BranchesPage.jsx
   },
   {
     id: 2,
     title: "Societies Hub",
-    description: "Explore college societies, track activities, and analyze skill-building opportunities. Credits: IGDTUW CITY",
+    description:
+      "Explore college societies, track activities, and analyze skill-building opportunities. Credits: IGDTUW CITY",
     image: societyImg,
     tags: ["College Societies", "Society Activities", "Skill Building"],
-    demoUrl: "#",
-    githubUrl: "#",
+    demoUrl: "/societies", // ✅ SocietiesPage.jsx
   },
   {
     id: 3,
     title: "Explore Hackathons",
-    description: "A platform to discover upcoming hackathons, view detailed event info, track deadlines, and find resources to help students participate and excel in hackathons.",
+    description:
+      "A platform to discover upcoming hackathons, view detailed event info, track deadlines, and find resources to help students participate and excel in hackathons.",
     image: hackathonImg,
     tags: ["Hackathon Discovery", "Event Tracker", "Hackathon Resources"],
-    demoUrl: "#",
-    githubUrl: "#",
+    demoUrl: "/hackathons", // ✅ HackathonsPage.jsx
   },
   {
     id: 4,
     title: "CGPA Calculator",
-    description: "A simple and efficient tool for students to calculate their semester-wise CGPA based on course credits and grades. Credits: IGDTUW CGPA Calculator",
+    description:
+      "A simple and efficient tool for students to calculate their semester-wise CGPA based on course credits and grades. Credits: IGDTUW CGPA Calculator",
     image: cgpaImg,
     tags: ["Education Tool", "CGPA Calculation"],
-    demoUrl: "#",
-    githubUrl: "#",
+    demoUrl: "/cgpa", // ✅ CgpaCalculatorPage.jsx
   },
   {
     id: 5,
     title: "Coming Soon",
-    description: "Something awesome is brewing... Stay tuned for surprises that might just make your college life less painful!",
+    description:
+      "Something awesome is brewing... Stay tuned for surprises that might just make your college life less painful!",
     image: soonImg,
     tags: ["Web App", "Future Feature", "Productivity", "Work In Progress"],
-    demoUrl: "#",
-    githubUrl: "#",
+    demoUrl: "/coming-soon", // ✅ ComingSoon.jsx
   },
   {
     id: 6,
     title: "Coming Soon",
-    description: "A mysterious project is in the works… Expect the unexpected. Prepare to be mildly impressed.",
+    description:
+      "A mysterious project is in the works… Expect the unexpected. Prepare to be mildly impressed.",
     image: soonImg,
     tags: ["Web App", "Future Feature", "Creative Project", "Work In Progress"],
-    demoUrl: "#",
-    githubUrl: "#",
+    demoUrl: "/coming-soon", // ✅ ComingSoon.jsx
   },
 ];
 
+
 // Flip card component
-const ProjectCard = ({ title, description, image, tags, demoUrl, githubUrl }) => {
+const ProjectCard = ({ title, description, image, tags, demoUrl }) => {
   return (
     <div className="flip-card w-80 h-60 cursor-pointer">
       <div className="flip-card-inner">
@@ -94,23 +96,10 @@ const ProjectCard = ({ title, description, image, tags, demoUrl, githubUrl }) =>
         {/* Back */}
         <div className="flip-card-back flex flex-col justify-between">
           <p className="text-sm text-center mb-4">{description}</p>
-          <div className="flex justify-center gap-6">
-            <a
-              href={demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-purple-400 transition"
-            >
+          <div className="flex justify-center">
+            <Link to={demoUrl} className="hover:text-purple-400 transition">
               <ExternalLink size={20} />
-            </a>
-            <a
-              href={githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-purple-400 transition"
-            >
-              <Github size={20} />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
