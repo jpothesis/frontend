@@ -45,7 +45,7 @@ const projects = [
       "A simple and efficient tool for students to calculate their semester-wise CGPA based on course credits and grades. Credits: IGDTUW CGPA Calculator",
     image: cgpaImg,
     tags: ["Education Tool", "CGPA Calculation"],
-    demoUrl: "/cgpa", // ✅ CgpaCalculatorPage.jsx
+    demoUrl: "/cgpa-calculator", // ✅ CgpaCalculatorPage.jsx
   },
   {
     id: 5,

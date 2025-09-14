@@ -20,21 +20,21 @@ const years = [
         icon: <FaBookOpen size={40} />,
         color: "from-violet-600 to-purple-600",
         description: "Intermediate courses & specialization basics",
-        link: "https://drive.google.com/file/d/your-2nd-year-link/view?usp=sharing",
+        link: "https://drive.google.com/drive/u/2/folders/128Aa1Pc2_fqoGjRgquFJgy5rdTUTrMgm",
     },
     {
         name: "3rd Year",
         icon: <FaCalendarAlt size={40} />,
         color: "from-indigo-600 to-blue-600",
         description: "Advanced technical & elective subjects",
-        link: "https://drive.google.com/file/d/your-3rd-year-link/view?usp=sharing",
+        link: "https://drive.google.com/drive/u/2/folders/1B1fr5StKivln_g4oBjnMXo3n12rMfkAO",
     },
     {
         name: "4th Year",
         icon: <FaGraduationCap size={40} />,
         color: "from-purple-500 to-pink-600",
         description: "Final year projects and specializations",
-        link: "https://drive.google.com/file/d/your-4th-year-link/view?usp=sharing",
+        link: "https://drive.google.com/drive/u/2/folders/1ojTFUz8veAcQ0U6HQmv-VGMEjjvm5v4O",
     },
 ]
 

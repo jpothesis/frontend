@@ -1,46 +1,54 @@
-// src/api.ts
+// src/api.js
 import axios from "axios";
 
+// Use backend URL from .env
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 const API = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/auth`,
-  withCredentials: true, // send refresh token cookie automatically
+  baseURL: `${BASE_URL}/api`, // use deployed backend
+  withCredentials: true,      // send refresh token cookie automatically
 });
 
-// Attach access token to requests
+// Attach access token to all requests
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (token && config.headers) {
+    config.headers["Authorization"] = `Bearer ${token}`;
   }
   return config;
 });
 
-// Handle 401 errors → try refresh token
+// Response interceptor: handle 401 → try refresh token
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        // Call refresh endpoint
-        const res = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/auth/refresh`,
+        // Call refresh endpoint using the same backend URL
+        const refreshRes = await axios.post(
+          `${BASE_URL}/api/auth/refresh`,
           {},
           { withCredentials: true }
         );
 
-        const newToken = res.data.accessToken;
+        const newToken = refreshRes.data.accessToken;
         localStorage.setItem("accessToken", newToken);
 
         // Retry original request with new token
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        if (originalRequest.headers) {
+          originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+        }
+
         return API(originalRequest);
-      } catch (err) {
+      } catch (refreshErr) {
+        // Failed to refresh → logout
         localStorage.removeItem("accessToken");
         window.location.href = "/login";
+        return Promise.reject(refreshErr);
       }
     }
 

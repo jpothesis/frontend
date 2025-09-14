@@ -1,8 +1,10 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import Grid from "../../components/Grid"; 
 import { DashboardProvider } from "../../context/DashboardContext";
 import API from "../../api/api";
-import DashboardLayout from "./DashboardLayout"; // ✅ import layout
+import DashboardLayout from "./DashboardLayout";
+import Grid from "../../components/Grid";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -11,19 +13,25 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchMe = async () => {
       try {
-        const res = await API.get("/me");
-        if (res.data.success) {
-          setUser(res.data.user);
-        } else {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("user");
-          window.location.href = "/login";
-        }
+        // Try fetching user
+        const res = await API.get("/auth/me");
+        setUser(res.data.user);
       } catch (err) {
         console.error("Failed to fetch user:", err);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("user");
-        window.location.href = "/login";
+
+        // Try refresh token
+        try {
+          const refreshRes = await API.post("/auth/refresh");
+          localStorage.setItem("accessToken", refreshRes.data.accessToken);
+
+          // Retry fetching user
+          const retry = await API.get("/auth/me");
+          setUser(retry.data.user);
+        } catch (refreshErr) {
+          console.error("Refresh failed:", refreshErr);
+          localStorage.removeItem("accessToken");
+          window.location.href = "/login";
+        }
       } finally {
         setLoading(false);
       }
@@ -39,6 +47,8 @@ const Dashboard = () => {
       </div>
     );
   }
+
+  if (!user) return null; // prevent rendering before auth
 
   return (
     <DashboardProvider>

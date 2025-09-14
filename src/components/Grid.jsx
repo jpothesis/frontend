@@ -11,7 +11,9 @@ import { useNavigate } from "react-router-dom";
 import bannerImage from "../assets/banner.png";
 import bannerLogo from "../assets/banner_logo.png";
 import { FaCalendarAlt, FaUniversity } from "react-icons/fa";
-import { Assignments } from "@/components/Assignments";
+import { Assignments } from "./Assignments";
+ // ✅ correct
+
 
 
 

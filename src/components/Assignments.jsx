@@ -1,9 +1,13 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { FaPlus, FaCalendarPlus, FaTrash } from "react-icons/fa"
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FaPlus, FaCalendarPlus, FaTrash } from "react-icons/fa";
+import API from "../api/api";
 
+
+
+// ================== Animations ==================
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (custom) => ({
@@ -11,60 +15,69 @@ const fadeUp = {
     y: 0,
     transition: { delay: custom * 0.1, duration: 0.6, ease: "easeOut" },
   }),
-}
+};
 
+// ================== Component ==================
 export function Assignments() {
-  const [assignments, setAssignments] = useState([])
-  const [title, setTitle] = useState("")
-  const [subject, setSubject] = useState("")
-  const [description, setDescription] = useState("")
-  const [dueDate, setDueDate] = useState("")
+  const [assignments, setAssignments] = useState([]);
+  const [title, setTitle] = useState("");
+  const [subject, setSubject] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
 
-  // Load saved assignments from localStorage
+  // Fetch assignments on load
   useEffect(() => {
-    const saved = localStorage.getItem("assignments")
-    if (saved) setAssignments(JSON.parse(saved))
-  }, [])
+    const fetchAssignments = async () => {
+      try {
+        const { data } = await API.get("/assignments"); // ✅ relative path
+        setAssignments(data);
+      } catch (err) {
+        console.error("Error fetching assignments:", err);
+      }
+    };
+    fetchAssignments();
+  }, []);
 
-  // Save to localStorage whenever assignments change
-  useEffect(() => {
-    localStorage.setItem("assignments", JSON.stringify(assignments))
-  }, [assignments])
+  // Create new assignment
+  const addAssignment = async () => {
+    if (!title.trim() || !dueDate.trim()) return;
 
-  const addAssignment = () => {
-    if (!title.trim() || !dueDate.trim()) return
+    const newAssignment = { title, subject, description, dueDate };
 
-    const newAssignment = {
-      id: Date.now(),
-      title,
-      subject,
-      description,
-      dueDate,
-      status: "pending",
+    try {
+      const { data } = await API.post("/assignments", newAssignment); // ✅ relative path
+      setAssignments([...assignments, data]);
+      setTitle("");
+      setSubject("");
+      setDescription("");
+      setDueDate("");
+    } catch (err) {
+      console.error("Error adding assignment:", err);
     }
+  };
 
-    setAssignments([...assignments, newAssignment])
-    setTitle("")
-    setSubject("")
-    setDescription("")
-    setDueDate("")
-  }
+  // Delete assignment
+  const removeAssignment = async (id) => {
+    try {
+      await API.delete(`/assignments/${id}`); // ✅ relative path
+      setAssignments(assignments.filter((a) => a._id !== id));
+    } catch (err) {
+      console.error("Error deleting assignment:", err);
+    }
+  };
 
-  const removeAssignment = (id) => {
-    setAssignments(assignments.filter((a) => a.id !== id))
-  }
-
+  // Add to Google Calendar
   const addToGoogleCalendar = (item) => {
-    const start = item.dueDate + "T09:00:00"
-    const end = item.dueDate + "T10:00:00"
-    const baseUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE"
+    const start = item.dueDate.slice(0, 10) + "T09:00:00";
+    const end = item.dueDate.slice(0, 10) + "T10:00:00";
+    const baseUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE";
     const url = `${baseUrl}&text=${encodeURIComponent(
-      item.title,
+      item.title
     )}&dates=${start.replace(/-|:/g, "")}/${end.replace(/-|:/g, "")}&details=${encodeURIComponent(
-      item.description || "",
-    )}`
-    window.open(url, "_blank")
-  }
+      item.description || ""
+    )}`;
+    window.open(url, "_blank");
+  };
 
   return (
     <div className="space-y-8">
@@ -151,14 +164,15 @@ export function Assignments() {
 
         <div className="grid gap-4">
           {assignments.map((assignment, index) => {
-            const daysLeft = (new Date(assignment.dueDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+            const daysLeft =
+              (new Date(assignment.dueDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24);
 
-            const isUrgent = daysLeft <= 2
-            const isOverdue = daysLeft < 0
+            const isUrgent = daysLeft <= 2 && daysLeft >= 0;
+            const isOverdue = daysLeft < 0;
 
             return (
               <motion.div
-                key={assignment.id}
+                key={assignment._id}
                 initial="hidden"
                 animate="visible"
                 variants={fadeUp}
@@ -167,11 +181,10 @@ export function Assignments() {
                   isOverdue
                     ? "bg-gradient-to-r from-red-900/60 to-pink-800/60 border border-red-400/30"
                     : isUrgent
-                      ? "bg-gradient-to-r from-orange-900/60 to-red-800/60 border border-orange-400/30"
-                      : "bg-gradient-to-r from-purple-800/60 to-violet-700/60 border border-purple-400/20"
+                    ? "bg-gradient-to-r from-orange-900/60 to-red-800/60 border border-orange-400/30"
+                    : "bg-gradient-to-r from-purple-800/60 to-violet-700/60 border border-purple-400/20"
                 }`}
               >
-                {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
 
                 <div className="relative p-6 flex justify-between items-start">
@@ -183,7 +196,9 @@ export function Assignments() {
                         }`}
                       ></div>
                       <div className="flex-1">
-                        <h4 className="font-bold text-white text-lg leading-tight">{assignment.title}</h4>
+                        <h4 className="font-bold text-white text-lg leading-tight">
+                          {assignment.title}
+                        </h4>
                         {assignment.subject && (
                           <span className="inline-block px-3 py-1 bg-gradient-to-r from-purple-600/50 to-violet-600/50 text-purple-200 text-xs rounded-full mt-2">
                             {assignment.subject}
@@ -193,7 +208,9 @@ export function Assignments() {
                     </div>
 
                     {assignment.description && (
-                      <p className="text-purple-200 text-sm leading-relaxed ml-6">{assignment.description}</p>
+                      <p className="text-purple-200 text-sm leading-relaxed ml-6">
+                        {assignment.description}
+                      </p>
                     )}
 
                     <div className="ml-6 space-y-1">
@@ -217,7 +234,8 @@ export function Assignments() {
                       ) : isUrgent ? (
                         <p className="text-orange-300 font-semibold text-sm flex items-center gap-2">
                           <span>⏰</span>
-                          Due in {Math.ceil(daysLeft)} day{Math.ceil(daysLeft) !== 1 ? "s" : ""}!
+                          Due in {Math.ceil(daysLeft)} day
+                          {Math.ceil(daysLeft) !== 1 ? "s" : ""}!
                         </p>
                       ) : (
                         <p className="text-purple-400 text-sm">
@@ -236,7 +254,7 @@ export function Assignments() {
                       <FaCalendarPlus className="text-sm" />
                     </button>
                     <button
-                      onClick={() => removeAssignment(assignment.id)}
+                      onClick={() => removeAssignment(assignment._id)}
                       className="p-3 bg-gradient-to-r from-red-600/50 to-pink-600/50 hover:from-red-500/60 hover:to-pink-500/60 text-white rounded-xl transition-all duration-200 hover:scale-110 shadow-lg"
                       title="Remove Assignment"
                     >
@@ -245,10 +263,10 @@ export function Assignments() {
                   </div>
                 </div>
               </motion.div>
-            )
+            );
           })}
         </div>
       </div>
     </div>
-  )
+  );
 }
