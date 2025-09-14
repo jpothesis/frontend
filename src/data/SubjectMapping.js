@@ -1,5 +1,5 @@
 const subjectsMapping = {
- CSE: {
+    CSE: {
       SEM1: [
         "Applied Mathematics",
         "Applied Physics",
@@ -161,6 +161,7 @@ const subjectsMapping = {
         "Elements of Mechanical Engineering",
         "Communication Skills",
         "Workshop Practice",
+        "Programming Fundamentals"
       ],
       SEM2: [
         "Probability and Statistics",
@@ -194,8 +195,5 @@ const subjectsMapping = {
       ],
     },
   };
-
-
   
   export default subjectsMapping;
-  

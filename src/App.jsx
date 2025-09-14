@@ -13,7 +13,7 @@ import Semesters from "./pages/acads/Semesters.jsx";
 import SubjectsPage from "./pages/acads/Subjects.jsx";
 import HackathonsPage from "./pages/HackathonsPage.jsx";
 import ComingSoon from "./pages/ComingSoon.jsx";
-
+import Syllabus from "./pages/Syllabus";
 
 
 
@@ -49,7 +49,7 @@ function App() {
           <Route path="/hackathons" element={<HackathonsPage />} />
           <Route path="/career-ladder" element={<ComingSoon />} />
           <Route path="/coming-soon" element={<ComingSoon />} />
-          <Route path="/syllabus" element={<ComingSoon />} />
+         <Route path="/syllabus" element={<Syllabus />} />
 
           {/* Protected Routes */}
           <Route
