@@ -21,12 +21,12 @@ export const AboutSection = () => {
   const team = [
     {
       img: pic1,
-      name: "Jaanvi Choudhary - Frontend Developer",
+      name: "Jaanvi Choudhary - Developer",
       desc: "Crafting web vibes that your eyes can’t resist!",
     },
     {
       img: pic2,
-      name: "Avika Srivastava - Backend Developer",
+      name: "Avika Srivastava - Developer",
       desc: "Turning spaghetti code into smooth-running web adventures—watch the magic happen!",
     },
     {
