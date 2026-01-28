@@ -23,6 +23,15 @@ const subjectsMapping = {
         "Operation Management",
         "Design and Analysis of Algorithms",
       ],
+      SEM4: [
+        "Operating Systems",
+        "DBMS",
+        "COA",
+        "Advanced IOT",
+        "DCCN",
+        "UHV",
+        "Data Mining",
+      ],
     },
     CSE_AI: {
       SEM1: [
@@ -50,6 +59,16 @@ const subjectsMapping = {
         "Operation Management",
         "Ergonomic design",
         "Computer Organization and Architecture",
+      ],
+      SEM4: [
+        "Computer Networks (CN)",
+        "Operating Systems",
+        "Design and Analysis of Algorithms",
+        "Optimization Techniques & decision Making",
+        "Open Source Technologies",
+        "Cloud Computing",
+        "Software Engineering",
+        "UHV",
       ],
     },
     IT: {
@@ -187,7 +206,7 @@ const subjectsMapping = {
     MAC: {
       SEM1: [
         "Calculus 1",
-        "Applied Physics",
+        "Enviormental Sciences",
         "Programming with C",
         "Communication Skills",
         "Basics of Electrical and Electronics Engineering",
