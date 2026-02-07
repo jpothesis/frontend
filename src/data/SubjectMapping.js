@@ -103,7 +103,7 @@ const subjectsMapping = {
         "Object Oriented Programming",
         "DCCN",
         "IT Workshop II ",
-        "Human Values and Professional Ethics",
+        "UHV",
       ],
     },
     ECE: {
@@ -236,7 +236,7 @@ const subjectsMapping = {
         "Robotics Lab",
       ],
       SEM4: [
-        "IOT ",
+        "IOT",
         "Theory of Machines",
         "Production Technology II",
         "Logistics & Supply Chain Management ",
@@ -244,7 +244,7 @@ const subjectsMapping = {
         "Thermal Engineering II lab",
         "Fluid mechanics and hydraulic machines lab ",
         "Thermal Engineering II lab",
-        "UHV ",
+        "UHV",
       ],
     },
     MAC: {
