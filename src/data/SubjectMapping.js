@@ -97,6 +97,14 @@ const subjectsMapping = {
         "Operation Management",
         "Ergonomic design",
       ],
+      SEM4: [
+        "Software Engineering",
+        "Machine Learning",
+        "Object Oriented Programming",
+        "DCCN",
+        "IT Workshop II ",
+        "Human Values and Professional Ethics",
+      ],
     },
     ECE: {
       SEM1: [
@@ -121,6 +129,14 @@ const subjectsMapping = {
         "Electronics Circuit Simulation Workshop",
         "Advanced Electronic Workshop",
         "Data Base Management Systems",
+      ],
+      SEM4: [
+        "Control system",
+        "Microprocessor &Microcontrollers",
+        "Electromagnetic Field Theory",
+        "Analog Electronics",
+        "Digital Communication System",
+        "UHV",
       ],
     },
     ECE_AI: {
@@ -147,6 +163,13 @@ const subjectsMapping = {
         "Advanced Electronic Workshop",
         "Data Structures and Algorithms",
       ],
+      SEM4: [
+        "Analog Communication System",
+        "Computer Organization and Architecture",
+        "Artificial Intelligence",
+        "Design and Analysis of Algorithms",
+        "Database Management System",
+      ],
     },
     AIML: {
       SEM1: [
@@ -171,6 +194,16 @@ const subjectsMapping = {
         "Data Base Management Systems",
         "Open Source Technologies",
         "Operation Management",
+      ],
+
+      SEM4: [
+        "Design and Analysis of Algorithms",
+        "Operating Systems",
+        "Artificial Intelligence",
+        "Data Mining and Data warehouse",
+        "Cloud Computing",
+        "Fundamentals of Devops",
+        "UHV",
       ],
     },
     MAE: {
@@ -202,6 +235,17 @@ const subjectsMapping = {
         "Data Base Management Systems",
         "Robotics Lab",
       ],
+      SEM4: [
+        "IOT ",
+        "Theory of Machines",
+        "Production Technology II",
+        "Logistics & Supply Chain Management ",
+        "Strength of Materials",
+        "Thermal Engineering II lab",
+        "Fluid mechanics and hydraulic machines lab ",
+        "Thermal Engineering II lab",
+        "UHV ",
+      ],
     },
     MAC: {
       SEM1: [
@@ -211,6 +255,14 @@ const subjectsMapping = {
         "Communication Skills",
         "Basics of Electrical and Electronics Engineering",
         "Web Application Development",
+      ],
+      SEM4: [
+        "Calculus-2",
+        "Applied Physics",
+        "Soft Skills and personality development ",
+        "Linear algebra",
+        "Programming tools for mathematics",
+        "IT Workshop",
       ],
     },
   };

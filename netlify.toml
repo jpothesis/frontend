@@ -3,7 +3,10 @@
   publish = "dist"
 
 [build.environment]
-NODE_VERSION = "18"
+  NPM_FLAGS = "--include=dev"
+  # or
+  # NPM_CONFIG_PRODUCTION = "false"
+  NODE_VERSION = "18"
 
 [[redirects]]
   from = "/*"
