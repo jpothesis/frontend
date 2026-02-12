@@ -25,7 +25,7 @@ const subjectsMapping = {
       ],
       SEM4: [
         "Operating Systems",
-        "DBMS",
+        "Data Base Management Systems",
         "COA",
         "Advanced IOT",
         "DCCN",
@@ -132,7 +132,7 @@ const subjectsMapping = {
       ],
       SEM4: [
         "Control system",
-        "Microprocessor &Microcontrollers",
+        "Microprocessor & Microcontrollers",
         "Electromagnetic Field Theory",
         "Analog Electronics",
         "Digital Communication System",
@@ -165,10 +165,11 @@ const subjectsMapping = {
       ],
       SEM4: [
         "Analog Communication System",
-        "Computer Organization and Architecture",
+        "COA",
         "Artificial Intelligence",
         "Design and Analysis of Algorithms",
-        "Database Management System",
+        "Data Base Management System",
+        "UHV",
       ],
     },
     AIML: {
@@ -200,7 +201,7 @@ const subjectsMapping = {
         "Design and Analysis of Algorithms",
         "Operating Systems",
         "Artificial Intelligence",
-        "Data Mining and Data warehouse",
+        "Data Mining",
         "Cloud Computing",
         "Fundamentals of Devops",
         "UHV",
@@ -243,7 +244,6 @@ const subjectsMapping = {
         "Strength of Materials",
         "Thermal Engineering II lab",
         "Fluid mechanics and hydraulic machines lab ",
-        "Thermal Engineering II lab",
         "UHV",
       ],
     },
@@ -256,10 +256,10 @@ const subjectsMapping = {
         "Basics of Electrical and Electronics Engineering",
         "Web Application Development",
       ],
-      SEM4: [
+      SEM2: [
         "Calculus-2",
         "Applied Physics",
-        "Soft Skills and personality development ",
+        "Soft Skills and Personality Development ",
         "Linear algebra",
         "Programming tools for mathematics",
         "IT Workshop",
