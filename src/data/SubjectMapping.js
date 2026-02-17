@@ -259,7 +259,7 @@ const subjectsMapping = {
       SEM2: [
         "Calculus 2",
         "Applied Physics",
-        "Soft Skills and Personality Development ",
+        "Soft Skills and Personality Development",
         "Linear algebra",
         "Programming tools for mathematics",
         "IT Workshop",
